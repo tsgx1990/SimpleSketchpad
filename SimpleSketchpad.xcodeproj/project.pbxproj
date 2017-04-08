@@ -13,6 +13,9 @@
 		E7B15ACC1E987A760020ABD5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7B15ACA1E987A760020ABD5 /* Main.storyboard */; };
 		E7B15ACE1E987A760020ABD5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7B15ACD1E987A760020ABD5 /* Assets.xcassets */; };
 		E7B15AD11E987A760020ABD5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7B15ACF1E987A760020ABD5 /* LaunchScreen.storyboard */; };
+		E7B15ADA1E987AB60020ABD5 /* SKView.m in Sources */ = {isa = PBXBuildFile; fileRef = E7B15AD91E987AB60020ABD5 /* SKView.m */; };
+		E7B15ADD1E987ACF0020ABD5 /* SKShapeLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E7B15ADC1E987ACF0020ABD5 /* SKShapeLayer.m */; };
+		E7B15AE01E9886440020ABD5 /* PaintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7B15ADF1E9886440020ABD5 /* PaintViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +29,12 @@
 		E7B15ACD1E987A760020ABD5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E7B15AD01E987A760020ABD5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E7B15AD21E987A760020ABD5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E7B15AD81E987AB60020ABD5 /* SKView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKView.h; sourceTree = "<group>"; };
+		E7B15AD91E987AB60020ABD5 /* SKView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKView.m; sourceTree = "<group>"; };
+		E7B15ADB1E987ACF0020ABD5 /* SKShapeLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKShapeLayer.h; sourceTree = "<group>"; };
+		E7B15ADC1E987ACF0020ABD5 /* SKShapeLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKShapeLayer.m; sourceTree = "<group>"; };
+		E7B15ADE1E9886440020ABD5 /* PaintViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaintViewController.h; sourceTree = "<group>"; };
+		E7B15ADF1E9886440020ABD5 /* PaintViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaintViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +51,10 @@
 		E7B15AB51E987A760020ABD5 = {
 			isa = PBXGroup;
 			children = (
+				E7B15ADB1E987ACF0020ABD5 /* SKShapeLayer.h */,
+				E7B15ADC1E987ACF0020ABD5 /* SKShapeLayer.m */,
+				E7B15AD81E987AB60020ABD5 /* SKView.h */,
+				E7B15AD91E987AB60020ABD5 /* SKView.m */,
 				E7B15AC01E987A760020ABD5 /* SimpleSketchpad */,
 				E7B15ABF1E987A760020ABD5 /* Products */,
 			);
@@ -62,6 +75,8 @@
 				E7B15AC51E987A760020ABD5 /* AppDelegate.m */,
 				E7B15AC71E987A760020ABD5 /* ViewController.h */,
 				E7B15AC81E987A760020ABD5 /* ViewController.m */,
+				E7B15ADE1E9886440020ABD5 /* PaintViewController.h */,
+				E7B15ADF1E9886440020ABD5 /* PaintViewController.m */,
 				E7B15ACA1E987A760020ABD5 /* Main.storyboard */,
 				E7B15ACD1E987A760020ABD5 /* Assets.xcassets */,
 				E7B15ACF1E987A760020ABD5 /* LaunchScreen.storyboard */,
@@ -110,7 +125,8 @@
 				TargetAttributes = {
 					E7B15ABD1E987A760020ABD5 = {
 						CreatedOnToolsVersion = 8.2.1;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = 4367865XZN;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -150,6 +166,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7B15ADD1E987ACF0020ABD5 /* SKShapeLayer.m in Sources */,
+				E7B15AE01E9886440020ABD5 /* PaintViewController.m in Sources */,
+				E7B15ADA1E987AB60020ABD5 /* SKView.m in Sources */,
 				E7B15AC91E987A760020ABD5 /* ViewController.m in Sources */,
 				E7B15AC61E987A760020ABD5 /* AppDelegate.m in Sources */,
 				E7B15AC31E987A760020ABD5 /* main.m in Sources */,
@@ -270,10 +289,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 4367865XZN;
 				INFOPLIST_FILE = SimpleSketchpad/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bjhl.SimpleSketchpad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "ab6f7cf3-d32c-4096-b4fa-3322377d24e2";
+				PROVISIONING_PROFILE_SPECIFIER = "common-dev";
 			};
 			name = Debug;
 		};
@@ -281,7 +304,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SimpleSketchpad/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bjhl.SimpleSketchpad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
