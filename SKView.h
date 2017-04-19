@@ -14,16 +14,9 @@
 - (void)removeByPoint;
 - (void)removeAllPaths;
 
-- (void)removeLastPathAutomatically;
-- (void)removeByPointAutomatically;
-
 @property (nonatomic, assign) NSInteger removeLastPathVelocity;
-@property (nonatomic, assign) NSInteger removeByPointVelocity;
+@property (nonatomic, assign) BOOL stopRemoveLastPath;
+@property (nonatomic, assign) BOOL stopRemoveByPoint;
 
-@property (nonatomic, assign) BOOL pauseRemoveLastPath;
-@property (nonatomic, assign) BOOL pauseRemoveByPoint;
-
-- (void)stopRemoveLastPath;
-- (void)stopRemoveByPoint;
 
 @end

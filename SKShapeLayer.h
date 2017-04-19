@@ -13,8 +13,11 @@
 
 - (void)moveToPoint:(CGPoint)point;
 - (void)addLineToPoint:(CGPoint)point;
+- (void)addLineToPoint:(CGPoint)point offset:(CGFloat)offset;
 - (void)endPath; // touch end/cancel 后调用
 
-- (void)reducePath; // 逐渐缩短 bezierPath
+- (void)reduceByLine; // 逐渐缩短 bezierPath
+
+@property (nonatomic, assign) BOOL stopReduceByPoint;
 
 @end

@@ -74,33 +74,53 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7hS-jk-06h" customClass="SKView">
-                                <rect key="frame" x="38" y="131" width="299" height="434"/>
+                                <rect key="frame" x="38" y="94" width="299" height="434"/>
                                 <color key="backgroundColor" red="1" green="1" blue="0.56236713435374153" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Ea-7b-pDz">
-                                <rect key="frame" x="38" y="579" width="62" height="30"/>
+                                <rect key="frame" x="26" y="546" width="81" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="62" id="c30-5e-kkw"/>
+                                    <constraint firstAttribute="width" constant="81" id="c30-5e-kkw"/>
                                 </constraints>
-                                <state key="normal" title=" 撤销"/>
+                                <state key="normal" title=" 逐点撤销"/>
                                 <connections>
-                                    <action selector="revokeBtnPressed:" destination="C3s-1A-2PM" eventType="touchUpInside" id="swH-7n-dPp"/>
+                                    <action selector="removeByPoint:" destination="C3s-1A-2PM" eventType="touchUpInside" id="n5R-jw-xTy"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f4j-mY-R8S">
-                                <rect key="frame" x="119" y="579" width="81" height="30"/>
+                                <rect key="frame" x="124" y="546" width="104" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="81" id="S6W-f3-pN2"/>
+                                    <constraint firstAttribute="width" constant="104" id="S6W-f3-pN2"/>
                                 </constraints>
-                                <state key="normal" title=" 一点点撤销"/>
+                                <state key="normal" title=" 逐点撤销停止"/>
                                 <connections>
-                                    <action selector="revokeByPoint:" destination="C3s-1A-2PM" eventType="touchUpInside" id="E8n-bd-31K"/>
+                                    <action selector="stopRemoveByPoint:" destination="C3s-1A-2PM" eventType="touchUpInside" id="gzO-zY-h84"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="arQ-wp-Lyx">
+                                <rect key="frame" x="124" y="584" width="104" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="104" id="Dd2-qf-zxW"/>
+                                </constraints>
+                                <state key="normal" title=" 逐段撤销停止"/>
+                                <connections>
+                                    <action selector="stopRemoveLastPath:" destination="C3s-1A-2PM" eventType="touchUpInside" id="bfU-oi-DvJ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="thg-iu-DCi">
+                                <rect key="frame" x="26" y="584" width="81" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="81" id="qL3-7d-I2k"/>
+                                </constraints>
+                                <state key="normal" title=" 逐段撤销"/>
+                                <connections>
+                                    <action selector="removeLastPath:" destination="C3s-1A-2PM" eventType="touchUpInside" id="aSR-aV-Rym"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5hL-Rk-Wr7">
-                                <rect key="frame" x="215" y="579" width="66" height="30"/>
+                                <rect key="frame" x="236" y="546" width="78" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="66" id="A4j-ti-eS1"/>
+                                    <constraint firstAttribute="width" constant="78" id="A4j-ti-eS1"/>
                                     <constraint firstAttribute="height" constant="30" id="DKb-pX-oct"/>
                                 </constraints>
                                 <state key="normal" title="全部清除"/>
@@ -112,15 +132,20 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="7hS-jk-06h" secondAttribute="trailing" constant="22" id="8K4-hC-6Fi"/>
-                            <constraint firstItem="f4j-mY-R8S" firstAttribute="leading" secondItem="7Ea-7b-pDz" secondAttribute="trailing" constant="19" id="LqU-Ka-eNh"/>
+                            <constraint firstItem="arQ-wp-Lyx" firstAttribute="top" secondItem="f4j-mY-R8S" secondAttribute="bottom" constant="8" id="EQO-BC-4eo"/>
+                            <constraint firstItem="rnl-V2-sAM" firstAttribute="top" secondItem="thg-iu-DCi" secondAttribute="bottom" constant="53" id="J1j-Hy-rRZ"/>
+                            <constraint firstItem="arQ-wp-Lyx" firstAttribute="leading" secondItem="thg-iu-DCi" secondAttribute="trailing" constant="17" id="K6f-2E-ir0"/>
+                            <constraint firstItem="f4j-mY-R8S" firstAttribute="leading" secondItem="7Ea-7b-pDz" secondAttribute="trailing" constant="17" id="LqU-Ka-eNh"/>
                             <constraint firstItem="f4j-mY-R8S" firstAttribute="centerY" secondItem="7Ea-7b-pDz" secondAttribute="centerY" id="MNO-o6-vFc"/>
-                            <constraint firstItem="5hL-Rk-Wr7" firstAttribute="leading" secondItem="f4j-mY-R8S" secondAttribute="trailing" constant="15" id="Rca-MT-6Zr"/>
-                            <constraint firstItem="7Ea-7b-pDz" firstAttribute="leading" secondItem="gD0-8M-mhW" secondAttribute="leadingMargin" constant="22" id="S5m-8F-Bwv"/>
-                            <constraint firstItem="rnl-V2-sAM" firstAttribute="top" secondItem="7Ea-7b-pDz" secondAttribute="bottom" constant="58" id="ewU-Fh-30z"/>
+                            <constraint firstItem="thg-iu-DCi" firstAttribute="leading" secondItem="gD0-8M-mhW" secondAttribute="leadingMargin" constant="10" id="PTS-UJ-9FX"/>
+                            <constraint firstItem="5hL-Rk-Wr7" firstAttribute="leading" secondItem="f4j-mY-R8S" secondAttribute="trailing" constant="8" id="Rca-MT-6Zr"/>
+                            <constraint firstItem="7Ea-7b-pDz" firstAttribute="leading" secondItem="gD0-8M-mhW" secondAttribute="leadingMargin" constant="10" id="S5m-8F-Bwv"/>
+                            <constraint firstItem="rnl-V2-sAM" firstAttribute="top" secondItem="7Ea-7b-pDz" secondAttribute="bottom" constant="91" id="ewU-Fh-30z"/>
                             <constraint firstItem="5hL-Rk-Wr7" firstAttribute="centerY" secondItem="f4j-mY-R8S" secondAttribute="centerY" id="f7C-ve-3Z6"/>
                             <constraint firstItem="7hS-jk-06h" firstAttribute="leading" secondItem="gD0-8M-mhW" secondAttribute="leadingMargin" constant="22" id="gH1-id-a0X"/>
-                            <constraint firstItem="7Ea-7b-pDz" firstAttribute="top" secondItem="7hS-jk-06h" secondAttribute="bottom" constant="14" id="sfl-Mf-ZT3"/>
-                            <constraint firstItem="7hS-jk-06h" firstAttribute="top" secondItem="Hwc-yF-UOa" secondAttribute="bottom" constant="67" id="xee-Ff-Yas"/>
+                            <constraint firstItem="7Ea-7b-pDz" firstAttribute="top" secondItem="7hS-jk-06h" secondAttribute="bottom" constant="18" id="sfl-Mf-ZT3"/>
+                            <constraint firstItem="thg-iu-DCi" firstAttribute="top" secondItem="7Ea-7b-pDz" secondAttribute="bottom" constant="8" id="thm-Mn-YfB"/>
+                            <constraint firstItem="7hS-jk-06h" firstAttribute="top" secondItem="Hwc-yF-UOa" secondAttribute="bottom" constant="30" id="xee-Ff-Yas"/>
                         </constraints>
                     </view>
                     <connections>

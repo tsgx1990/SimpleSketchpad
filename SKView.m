@@ -19,9 +19,8 @@
 @implementation SKView
 {
     CGPoint prevAddedPoint;
-    
     CADisplayLink* rLastPathDLink;
-    CADisplayLink* rByPointDLink;
+    CADisplayLink* rByPointLink;
 }
 
 /*
@@ -44,30 +43,12 @@
 
 - (void)removeByPoint
 {
-    [self.topShapeLayer reducePath];
+    [self.topShapeLayer reduceByLine];
 }
 
 - (void)removeAllPaths
 {
     [self.contentLayer.sublayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
-}
-
-- (void)removeLastPathAutomatically
-{
-    if (!rLastPathDLink) {
-        rLastPathDLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(removeLastPathAutomaticallyHander:)];
-        self.removeLastPathVelocity = 24;
-        [rLastPathDLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-    }
-}
-
-- (void)removeByPointAutomatically
-{
-    if (!rByPointDLink) {
-        rByPointDLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(removeByPointAutomaticallyHander:)];
-        self.removeByPointVelocity = 4;
-        [rByPointDLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-    }
 }
 
 - (void)setRemoveLastPathVelocity:(NSInteger)removeLastPathVelocity
@@ -76,49 +57,50 @@
     rLastPathDLink.frameInterval = _removeLastPathVelocity;
 }
 
-- (void)setRemoveByPointVelocity:(NSInteger)removeByPointVelocity
+- (void)setStopRemoveLastPath:(BOOL)stopRemoveLastPath
 {
-    _removeByPointVelocity = removeByPointVelocity;
-    rByPointDLink.frameInterval = _removeByPointVelocity;
+    _stopRemoveLastPath = stopRemoveLastPath;
+    if (!stopRemoveLastPath && !rLastPathDLink) {
+        rLastPathDLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(removeLastPathAutomaticallyHandler:)];
+        self.removeLastPathVelocity = 30;
+        [rLastPathDLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    }
+    if (stopRemoveLastPath) {
+        [rLastPathDLink invalidate];
+        rLastPathDLink = nil;
+    }
 }
 
-- (void)setPauseRemoveLastPath:(BOOL)pauseRemoveLastPath
+- (void)setStopRemoveByPoint:(BOOL)stopRemoveByPoint
 {
-    _pauseRemoveLastPath = pauseRemoveLastPath;
-    rLastPathDLink.paused = pauseRemoveLastPath;
+    _stopRemoveByPoint = stopRemoveByPoint;
+    if (!stopRemoveByPoint && !rByPointLink) {
+        rByPointLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(removeByPointAutomaticallyHandler:)];
+        rByPointLink.frameInterval = 20;
+        [rByPointLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    }
+    if (stopRemoveByPoint) {
+        self.topShapeLayer.stopReduceByPoint = YES;
+        [rByPointLink invalidate];
+        rByPointLink = nil;
+    }
 }
 
-- (void)setPauseRemoveByPoint:(BOOL)pauseRemoveByPoint
-{
-    _pauseRemoveByPoint = pauseRemoveByPoint;
-    rByPointDLink.paused = pauseRemoveByPoint;
-}
-
-- (void)stopRemoveLastPath
-{
-    [rLastPathDLink invalidate];
-    rLastPathDLink = nil;
-}
-
-- (void)stopRemoveByPoint
-{
-    [rByPointDLink invalidate];
-    rByPointDLink = nil;
-}
-
-- (void)removeLastPathAutomaticallyHander:(CADisplayLink*)dLink
+- (void)removeLastPathAutomaticallyHandler:(CADisplayLink*)dLink
 {
     [self removeLastPath];
     if (!self.topShapeLayer) {
-        [self stopRemoveLastPath];
+        [rLastPathDLink invalidate];
+        rLastPathDLink = nil;
     }
 }
-                     
-- (void)removeByPointAutomaticallyHander:(CADisplayLink*)dLink
+
+- (void)removeByPointAutomaticallyHandler:(CADisplayLink*)dLink
 {
-    [self removeByPoint];
+    self.topShapeLayer.stopReduceByPoint = NO;
     if (!self.topShapeLayer) {
-        [self stopRemoveByPoint];
+        [rByPointLink invalidate];
+        rByPointLink = nil;
     }
 }
 
@@ -137,7 +119,7 @@
     CGPoint curPoint = [touches.anyObject locationInView:self];
     CGFloat moveDis = powf(curPoint.x-prevAddedPoint.x, 2) + powf(curPoint.y-prevAddedPoint.y, 2);
     if (moveDis > 6) {
-        [self.topShapeLayer addLineToPoint:curPoint];
+        [self.topShapeLayer addLineToPoint:curPoint offset:sqrtf(moveDis)];
         prevAddedPoint = curPoint;
     }
 }

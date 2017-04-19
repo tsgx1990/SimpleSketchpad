@@ -27,16 +27,23 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)revokeBtnPressed:(UIButton*)sender
-{
-//    [self.paintView removeLastPath];
-    [self.paintView removeLastPathAutomatically];
+- (IBAction)removeByPoint:(id)sender {
+//    [self.paintView removeByPoint];
+    self.paintView.stopRemoveByPoint = NO;
 }
 
-- (IBAction)revokeByPoint:(id)sender
-{
+- (IBAction)stopRemoveByPoint:(id)sender {
 //    [self.paintView removeByPoint];
-    [self.paintView removeByPointAutomatically];
+    self.paintView.stopRemoveByPoint = YES;
+}
+
+- (IBAction)removeLastPath:(id)sender {
+//    [self.paintView removeLastPath];
+    self.paintView.stopRemoveLastPath = NO;
+}
+
+- (IBAction)stopRemoveLastPath:(id)sender {
+    self.paintView.stopRemoveLastPath = YES;
 }
 
 - (IBAction)removeAllBtnPressed:(id)sender

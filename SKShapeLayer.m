@@ -23,10 +23,59 @@ void pathFunction(void *info, const CGPathElement *element)
     }
 }
 
+@interface CALayer (PauseResumeAnimation)
+
+- (void)pauseAnimation;
+- (void)resumeAnimation;
+
+@end
+
+@implementation CALayer (PauseResumeAnimation)
+
+- (void)pauseAnimation
+{
+    CFTimeInterval pausedTime = [self convertTime:CACurrentMediaTime() fromLayer:nil];
+    self.speed = 0.0;
+    self.timeOffset = pausedTime;
+}
+
+- (void)resumeAnimation
+{
+    CFTimeInterval pausedTime = [self timeOffset];
+    self.speed = 1.0;
+    self.beginTime = 0.0;
+    CFTimeInterval timeSincePause = [self convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
+    self.beginTime = timeSincePause;
+}
+
+@end
+
+@interface SKShapeLayerAnimationDelegate : NSObject<CAAnimationDelegate>
+
+@property (nonatomic, copy) void(^animationDidStop)(CAAnimation* anim, BOOL finished);
+
+@end
+
+@implementation SKShapeLayerAnimationDelegate
+
+#pragma mark - - CAAnimationDelegate
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    NSLog(@"%s", __func__);
+    if (self.animationDidStop) {
+        self.animationDidStop(anim, flag);
+    }
+}
+
+@end
+
 @interface SKShapeLayer ()
 {
     UIBezierPath* _bezierPath;
     NSMutableArray* _mPointArray;
+    
+    CGPoint prevPoint;
+    CGFloat pathLength;
 }
 
 @end
@@ -41,6 +90,7 @@ void pathFunction(void *info, const CGPathElement *element)
     [_bezierPath moveToPoint:point];
     self.path = _bezierPath.CGPath;
     _mPointArray = nil;
+    prevPoint = point;
 }
 
 - (void)addLineToPoint:(CGPoint)point
@@ -48,6 +98,20 @@ void pathFunction(void *info, const CGPathElement *element)
     [_bezierPath addLineToPoint:point];
     self.path = _bezierPath.CGPath;
     _mPointArray = nil;
+    
+    // 计算path长度
+    pathLength += sqrtf(powf(point.x-prevPoint.x, 2) + powf(point.y-prevPoint.y, 2));
+    prevPoint = point;
+}
+
+- (void)addLineToPoint:(CGPoint)point offset:(CGFloat)offset
+{
+    [_bezierPath addLineToPoint:point];
+    self.path = _bezierPath.CGPath;
+    _mPointArray = nil;
+    
+    pathLength += offset;
+    prevPoint = point;
 }
 
 - (void)endPath
@@ -56,7 +120,7 @@ void pathFunction(void *info, const CGPathElement *element)
     _mPointArray = nil;
 }
 
-- (void)reducePath
+- (void)reduceByLine
 {
     if (!_mPointArray.count) {
         NSMutableArray* mPathArr = [NSMutableArray arrayWithCapacity:10];
@@ -82,9 +146,48 @@ void pathFunction(void *info, const CGPathElement *element)
     }
 }
 
+- (void)setStopReduceByPoint:(BOOL)stopReduceByPoint
+{
+    static NSString* keyPath = @"strokeEnd";
+    CABasicAnimation* ani = (CABasicAnimation*)[self animationForKey:keyPath];
+    if (stopReduceByPoint) {
+        NSLog(@"presentationLayer.strokeEnd:%f", self.presentationLayer.strokeEnd);
+        NSLog(@"modelLayer.strokeEnd:%f", self.modelLayer.strokeEnd);
+        NSLog(@"self.strokeEnd:%f", self.strokeEnd);
+        if (ani) {
+            [self pauseAnimation];
+        }
+    }
+    else {
+        if (!ani) {
+            ani = [CABasicAnimation animationWithKeyPath:keyPath];
+            ani.duration = 0.01*pathLength;
+            ani.fromValue = @(1.0);
+            ani.toValue = @(0.0);
+            ani.fillMode = kCAFillModeForwards;
+            ani.removedOnCompletion = NO;
+            
+            SKShapeLayerAnimationDelegate* delegate = [[SKShapeLayerAnimationDelegate alloc] init];
+            __weak typeof(self) ws = self;
+            delegate.animationDidStop = ^(CAAnimation* anim, BOOL finished) {
+                [ws removeFromSuperlayer];
+            };
+            ani.delegate = delegate;
+            [self addAnimation:ani forKey:keyPath];
+        }
+        else if (_stopReduceByPoint != stopReduceByPoint) {
+            [self resumeAnimation];
+        }
+        else {
+            // do nothing
+        }
+    }
+    _stopReduceByPoint = stopReduceByPoint;
+}
+
 - (void)dealloc
 {
-    
+    NSLog(@"%s", __func__);
 }
 
 @end
